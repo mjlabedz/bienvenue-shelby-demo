@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenue Command Center</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <button type="button" class="brand" data-view="dashboard">
+          <span class="brand-name">Bienvenue</span>
+          <span class="brand-subtitle">Command Center</span>
+        </button>
+        <div class="demo-tools">
+          <span class="demo-tag">Demo only</span>
+          <span class="demo-next" id="demo-next" hidden></span>
+          <button type="button" class="demo-button" id="simulate-incoming">Simulate incoming email</button>
+          <button type="button" class="demo-button" id="simulate-reply" hidden>Simulate Holly reply</button>
+          <button type="button" class="demo-button" id="simulate-accept" hidden>Simulate Holly response</button>
+          <button type="button" class="demo-button" id="simulate-grocery" hidden>Simulate grocery list confirmation</button>
+          <button type="button" class="demo-button" id="reset-demo">Reset demo</button>
+        </div>
+        <p class="version">v0.3.0 Shelby Demo</p>
+      </header>
+
+      <div class="shell">
+        <nav class="nav" aria-label="Main">
+          <button type="button" class="nav-button is-active" data-view="dashboard" aria-current="page">Dashboard</button>
+          <button type="button" class="nav-button" data-view="inquiries">Inquiries</button>
+          <button type="button" class="nav-button" data-view="proposals">Proposals</button>
+          <button type="button" class="nav-button" data-view="jobs" data-jobs-tab="active">Jobs</button>
+          <button type="button" class="nav-button" data-view="business">Business Development</button>
+          <button type="button" class="nav-button" data-view="knowledge">Knowledge</button>
+        </nav>
+
+        <main class="main">
+          <section class="view view-dashboard" data-view="dashboard">
+            <p class="eyebrow">Tuesday, October 6</p>
+            <h1>Dashboard</h1>
+            <p class="lede">What needs your attention right now.</p>
+
+            <div class="summary" aria-label="Summary">
+              <button type="button" class="summary-item" data-view="inquiries">
+                <strong id="count-inquiries">0</strong>
+                <span>New Inquiries</span>
+              </button>
+              <button type="button" class="summary-item" data-view="proposals">
+                <strong id="count-proposals">0</strong>
+                <span>Open Proposals</span>
+              </button>
+              <button type="button" class="summary-item" data-view="jobs" data-jobs-tab="active">
+                <strong id="count-jobs">0</strong>
+                <span>Active Jobs</span>
+              </button>
+              <button type="button" class="summary-item" id="attention-card">
+                <strong id="count-attention">0</strong>
+                <span>Needs Attention</span>
+              </button>
+            </div>
+
+            <h2 id="attention-heading">Needs Attention</h2>
+            <div class="job-list" id="attention-list"></div>
+
+            <h2>Upcoming / Active Jobs</h2>
+            <p class="hint">Example stays below are background only.</p>
+            <div class="job-list" id="upcoming-list"></div>
+          </section>
+
+          <section class="view" data-view="inquiries" hidden>
+            <button type="button" class="back" data-view="dashboard">← Dashboard</button>
+            <p class="eyebrow">Inquiries</p>
+            <h1>Inquiries</h1>
+            <p class="lede">New requests waiting to be scoped.</p>
+            <div class="proposal-list" id="inquiry-list"></div>
+          </section>
+
+          <section class="view view-inquiry" data-view="inquiry" hidden>
+            <button type="button" class="back" id="back-to-inquiries">← Back to Inquiries</button>
+            <h1>Holly Ann Johnson</h1>
+            <p class="lede" id="inquiry-lede">Grocery stocking · Charleston · In a couple of weeks</p>
+            <p class="source" id="inquiry-source">Gmail · Received today</p>
+            <p class="stage-rail" aria-label="Workflow stage"></p>
+
+            <section class="thread" id="inquiry-thread" hidden></section>
+
+            <div class="know-grid">
+              <section>
+                <h2>Known</h2>
+                <dl class="know-list" id="known-list"></dl>
+              </section>
+              <section>
+                <h2 id="still-heading">Still need</h2>
+                <ul class="need-list" id="still-need"></ul>
+              </section>
+            </div>
+
+            <h2 id="draft-heading">Draft reply</h2>
+            <p id="draft-text" class="letter"></p>
+            <textarea id="draft-input" class="writing" rows="6" hidden aria-label="Draft reply"></textarea>
+            <div class="actions">
+              <button type="button" class="button-quiet" id="edit-draft">Edit Draft</button>
+              <button type="button" class="button-quiet" id="save-reply">Save Reply</button>
+              <span class="saved-note" id="scope-saved" hidden>Reply saved</span>
+            </div>
+            <div class="actions">
+              <button type="button" class="button-primary" id="send-followup">Send Follow-up</button>
+              <span class="sent-note" id="followup-sent" hidden>Follow-up sent</span>
+            </div>
+
+            <h2>Service scope</h2>
+            <div class="scope">
+              <label class="scope-line">
+                <input type="checkbox" id="scope-grocery" checked>
+                <span>Grocery stocking</span>
+                <span class="sample-price" id="inquiry-price-grocery">$275</span>
+              </label>
+              <label class="scope-line">
+                <input type="checkbox" id="scope-loadin" checked>
+                <span>Load-in / stocking fee</span>
+                <span class="sample-price" id="inquiry-price-loadin">$125</span>
+              </label>
+              <label class="scope-line">
+                <input type="checkbox" id="scope-concierge">
+                <span>Optional concierge services</span>
+                <span class="sample-price" id="inquiry-price-concierge">$75</span>
+              </label>
+              <label class="notes-label" for="scope-notes">Notes</label>
+              <textarea id="scope-notes" class="writing" rows="2" placeholder="Anything to remember for this stay"></textarea>
+            </div>
+            <p class="pass-through">Customer purchases / groceries: billed separately at actual cost</p>
+            <div class="actions actions-primary">
+              <button type="button" class="button-quiet" id="create-proposal">Create Proposal</button>
+            </div>
+          </section>
+
+          <section class="view" data-view="proposals" hidden>
+            <button type="button" class="back" data-view="dashboard">← Dashboard</button>
+            <p class="eyebrow">Proposals</p>
+            <h1>Proposals</h1>
+            <p class="lede">Proposals for upcoming stays.</p>
+            <div class="proposal-list" id="proposal-list"></div>
+          </section>
+
+          <section class="view view-proposal" data-view="proposal" hidden>
+            <button type="button" class="back" id="back-to-proposals">← Back to Proposals</button>
+            <div class="proposal-band">
+              <h1>Holly Ann Johnson</h1>
+              <p class="proposal-meta" id="proposal-meta"></p>
+            </div>
+            <p class="stage-rail" aria-label="Workflow stage"></p>
+            <section class="thread" id="proposal-thread" hidden></section>
+
+            <h2 class="work-heading">Services and pricing</h2>
+            <div class="price-edit">
+              <div class="price-line" id="line-grocery">
+                <input type="checkbox" id="price-grocery" checked aria-label="Include grocery stocking">
+                <span>Grocery stocking</span>
+                <label class="price-field" id="price-grocery-field">
+                  <span aria-hidden="true">$</span>
+                  <input id="price-grocery-amount" inputmode="numeric" value="275" aria-label="Grocery stocking price">
+                </label>
+                <span class="price-off" id="price-grocery-off" hidden>Not included</span>
+              </div>
+              <div class="price-line" id="line-loadin">
+                <input type="checkbox" id="price-loadin" checked aria-label="Include load-in fee">
+                <span>Load-in / stocking fee</span>
+                <label class="price-field" id="price-loadin-field">
+                  <span aria-hidden="true">$</span>
+                  <input id="price-loadin-amount" inputmode="numeric" value="125" aria-label="Load-in fee">
+                </label>
+                <span class="price-off" id="price-loadin-off" hidden>Not included</span>
+              </div>
+              <div class="price-line" id="line-concierge">
+                <input type="checkbox" id="price-concierge" aria-label="Include optional concierge services">
+                <span>Optional concierge services</span>
+                <label class="price-field" id="price-concierge-field" hidden>
+                  <span aria-hidden="true">$</span>
+                  <input id="price-concierge-amount" inputmode="numeric" value="75" aria-label="Concierge price">
+                </label>
+                <span class="price-off" id="price-concierge-off">Not included</span>
+              </div>
+            </div>
+            <p class="total" id="price-total"><span>Service fees</span><span id="price-total-amount">$400</span></p>
+            <p class="pass-through">Customer purchases / groceries: billed separately at actual cost</p>
+            <p class="scope-note" id="proposal-notes" hidden></p>
+
+            <h2>Proposal</h2>
+            <p id="proposal-letter" class="letter"></p>
+            <textarea id="proposal-input" class="writing" rows="7" hidden aria-label="Proposal message"></textarea>
+            <div class="actions proposal-actions">
+              <button type="button" class="button-quiet" id="edit-proposal">Edit Proposal</button>
+              <button type="button" class="button-quiet" id="save-proposal">Save Changes</button>
+              <button type="button" class="button-primary" id="send-proposal">Send Proposal</button>
+              <button type="button" class="button-primary" id="mark-accepted" hidden>Mark Accepted</button>
+              <button type="button" class="button-primary" id="view-active-job" hidden>View Active Job</button>
+              <span class="saved-note" id="proposal-saved" hidden>Changes saved</span>
+            </div>
+            <div id="send-warning" class="send-warning" hidden role="dialog" aria-labelledby="send-warning-text">
+              <p id="send-warning-text">Still missing: dates, property, and guest count. Send anyway?</p>
+              <div class="actions">
+                <button type="button" class="button-quiet" id="send-cancel">Cancel</button>
+                <button type="button" class="button-primary" id="send-anyway">Send Anyway</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="view" data-view="jobs" hidden>
+            <button type="button" class="back" data-view="dashboard">← Dashboard</button>
+            <p class="eyebrow">Jobs</p>
+            <h1>Jobs</h1>
+            <p class="lede">Active work stays here. Finished stays move to Completed.</p>
+            <div class="tabs" role="tablist" aria-label="Jobs">
+              <button type="button" class="tab" id="tab-active" role="tab" aria-selected="true">Active</button>
+              <button type="button" class="tab" id="tab-completed" role="tab" aria-selected="false">Completed</button>
+            </div>
+            <div id="job-active-panel">
+              <div class="job-list" id="job-active-list"></div>
+            </div>
+            <div id="job-completed-panel" hidden>
+              <div class="job-list" id="job-completed-list"></div>
+            </div>
+          </section>
+
+          <section class="view view-job" data-view="job" hidden>
+            <button type="button" class="back" id="back-to-jobs">← Back to Jobs</button>
+            <div class="job-band">
+              <h1 id="job-customer">Holly Ann Johnson</h1>
+              <p class="job-service" id="job-service">Grocery stocking</p>
+              <p class="job-meta" id="job-lede"></p>
+            </div>
+            <p class="stage-rail" id="job-rail" aria-label="Workflow stage"></p>
+            <div class="thread" id="job-thread"></div>
+            <p class="next-action" id="next-action"></p>
+            <h2 class="work-heading" id="work-heading">What Needs to Be Done</h2>
+            <ul class="tasks" id="task-list"></ul>
+            <div class="actions" id="complete-actions">
+              <button type="button" class="button-primary" id="mark-complete">Mark Job Complete</button>
+            </div>
+
+            <section class="fold">
+              <button type="button" class="fold-toggle" aria-expanded="false" aria-controls="fold-notes">Customer / property notes</button>
+              <div id="fold-notes" class="fold-body" hidden>
+                <dl class="facts" id="job-notes-list"></dl>
+                <p class="scope-note" id="job-scope-notes" hidden></p>
+                <textarea id="job-notes" class="writing" rows="3" aria-label="Notes for this stay" placeholder="Add a note for this stay"></textarea>
+              </div>
+            </section>
+            <section class="fold">
+              <button type="button" class="fold-toggle" aria-expanded="false" aria-controls="fold-proposal">Original scope / proposal</button>
+              <div id="fold-proposal" class="fold-body" hidden>
+                <ul class="prices" id="job-price-list"></ul>
+                <p class="total" id="job-price-total"></p>
+                <ul class="plain" id="job-assumptions"></ul>
+                <p id="job-proposal-letter" class="letter"></p>
+              </div>
+            </section>
+          </section>
+
+          <section class="view" data-view="business" hidden>
+            <button type="button" class="back" data-view="dashboard">← Dashboard</button>
+            <p class="eyebrow">Later</p>
+            <h1>Business Development</h1>
+            <p class="placeholder">Partner outreach, referrals, and follow-up will live here.</p>
+          </section>
+
+          <section class="view" data-view="knowledge" hidden>
+            <button type="button" class="back" data-view="dashboard">← Dashboard</button>
+            <p class="eyebrow">Later</p>
+            <h1>Knowledge</h1>
+            <p class="placeholder">Restaurants, houses, vendors, and Shelby’s notes will live here.</p>
+          </section>
+        </main>
+      </div>
+    </div>
+    <button type="button" id="mail-toast" class="mail-toast" hidden>
+      <span class="mail-kicker">Gmail</span>
+      <strong id="mail-from"></strong>
+      <p id="mail-snippet"></p>
+    </button>
+    <script src="script.js"></script>
+  </body>
+</html>
